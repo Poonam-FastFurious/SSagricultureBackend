@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { createBlogPost, getAllBlogPosts } from "../controllers/Blog.controler.js";
+import { createBlogPost, getAllBlogPosts, getBlogById } from "../controllers/Blog.controler.js";
 import { upload } from "../middlewares/FileUpload.middlwares.js";
 
 
@@ -15,6 +15,7 @@ router.post("/add",
       createBlogPost
 );
 router.get("/allblogs", getAllBlogPosts);
+router.get("/singleblogs", getBlogById);
 
 
 
