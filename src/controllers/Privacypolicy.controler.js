@@ -46,5 +46,31 @@ const addPrivacyPolicy = asyncHandler(async (req, res) => {
             });
       }
 });
+const getPrivacyPolicy = asyncHandler(async (req, res) => {
+      try {
+            // Fetch the latest privacy policy
+            const latestPrivacyPolicy = await PrivacyPolicy.find().sort({ effectiveDate: -1 });
 
-export { addPrivacyPolicy }
+            // Check if privacy policy exists
+            if (!latestPrivacyPolicy) {
+                  return res.status(404).json({
+                        success: false,
+                        message: "Privacy policy not found",
+                  });
+            }
+
+            // Return the privacy policy
+            res.status(200).json({
+                  success: true,
+                  data: latestPrivacyPolicy,
+            });
+      } catch (error) {
+            // Handle errors
+            res.status(500).json({
+                  success: false,
+                  message: error.message || "Internal Server Error",
+            });
+      }
+});
+
+export { addPrivacyPolicy, getPrivacyPolicy }

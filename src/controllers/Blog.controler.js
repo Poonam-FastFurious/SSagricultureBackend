@@ -78,4 +78,41 @@ const getAllBlogPosts = asyncHandler(async (req, res) => {
             });
       }
 });
-export { createBlogPost, getAllBlogPosts };
+const getBlogById = asyncHandler(async (req, res) => {
+      try {
+            const { id } = req.query;
+
+            // Validate if the ID is valid (this depends on your application's logic)
+            if (!id) {
+                  throw new ApiError(400, "Blog ID parameter is missing");
+            }
+
+            const blogPost = await BlogPost.findById(id);
+
+            if (!blogPost) {
+                  throw new ApiError(404, "Blog post not found");
+            }
+
+            return res.status(200).json({
+                  success: true,
+                  data: blogPost,
+                  message: "Blog post retrieved successfully",
+            });
+      } catch (error) {
+            console.error("Error fetching blog post:", error);
+
+            if (error instanceof ApiError) {
+                  return res.status(error.statusCode).json({
+                        success: false,
+                        message: error.message,
+                  });
+            }
+
+            return res.status(500).json({
+                  success: false,
+                  message: "Internal server error",
+            });
+      }
+});
+
+export { createBlogPost, getAllBlogPosts, getBlogById };

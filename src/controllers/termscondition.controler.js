@@ -47,5 +47,24 @@ const addtermscondition = asyncHandler(async (req, res) => {
             });
       }
 });
+const getAllTermsConditions = asyncHandler(async (req, res) => {
+      try {
+            // Fetch all terms and conditions from the database
+            const allTermsConditions = await termscondition.find();
 
-export { addtermscondition }
+            // Return success response with the terms and conditions data
+            res.status(200).json({
+                  success: true,
+                  data: allTermsConditions,
+                  message: "Successfully retrieved all terms and conditions",
+            });
+      } catch (error) {
+            // Handle errors
+            res.status(500).json({
+                  success: false,
+                  message: error.message || "Internal Server Error",
+            });
+      }
+});
+
+export { addtermscondition, getAllTermsConditions }

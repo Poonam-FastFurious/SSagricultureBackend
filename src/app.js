@@ -32,6 +32,8 @@ import paymentRoutes from "./routes/Payments.routes.js";
 import privacy from "./routes/Privacypolicy.routes.js";
 import termscondtion from "./routes/Termscondition.routes.js";
 import blogs from "./routes/Bloge.routes.js";
+import testimonials from "./routes/Testimonial.routes.js";
+import wishlist from "./routes/Wishlist.routes.js";
 //routes declearetion
 
 app.use("/api/v1/admin", adminrouter);
@@ -48,4 +50,6 @@ app.use("/api/v1/payments", paymentRoutes);
 app.use("/api/v1/privacy", privacy);
 app.use("/api/v1/terms", termscondtion);
 app.use("/api/v1/blog", blogs);
+app.use("/api/v1/testimonial", testimonials);
+app.use("/api/v1/wishlist", wishlist);
 export { app };
