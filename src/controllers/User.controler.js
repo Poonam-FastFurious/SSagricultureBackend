@@ -117,7 +117,6 @@ const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-  
   };
 
   return res
@@ -252,22 +251,44 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
-  const { fullName, email } = req.body;
+  const { fullName, email, avatar, address, username, mobile, dob, gender } =
+    req.body;
 
   if (!fullName || !email) {
-    throw new ApiError(400, "All fields are required");
+    throw new ApiError(400, "Full name and email are required");
   }
+
+  const updateFields = {
+    fullName,
+    email,
+    avatar,
+    address,
+    username,
+    mobile,
+    dob,
+    gender,
+  };
+
+  // Remove undefined fields from the update object
+  Object.keys(updateFields).forEach((key) => {
+    if (updateFields[key] === undefined) {
+      delete updateFields[key];
+    }
+  });
+
+  console.log("Update Fields: ", updateFields); // Debugging line
 
   const user = await User.findByIdAndUpdate(
     req.user?._id,
-    {
-      $set: {
-        fullName,
-        email: email,
-      },
-    },
+    { $set: updateFields },
     { new: true }
   ).select("-password");
+
+  console.log("Updated User: ", user); // Debugging line
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
 
   return res
     .status(200)
