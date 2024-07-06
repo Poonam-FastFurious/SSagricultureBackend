@@ -2,6 +2,20 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 // Define a schema for the user
+const addressSchema = new mongoose.Schema({
+  city: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+  zipCode: {
+    type: String,
+    required: true,
+  },
+});
 const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -26,7 +40,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
   address: {
-    type: String,
+    type: addressSchema,
   },
   username: {
     type: String,
