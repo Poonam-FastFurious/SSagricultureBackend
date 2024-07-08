@@ -55,7 +55,7 @@ const getOrderById = async (req, res) => {
   try {
     // Find the order by ID
     const order = await Order.findById(id)
-      .populate({ path: "customer", select: "fullName" }) // Populate customer with fullName field only
+      .populate({ path: "customer", select: ["fullName", "email", "mobile"] }) // Populate customer with fullName field only
       .populate({
         path: "products.product",
         select: [
