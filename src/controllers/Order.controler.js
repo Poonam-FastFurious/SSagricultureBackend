@@ -2,7 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Order } from "../models/Order.model.js";
-
+import { User } from "../models/User.model.js";
 const placeOrder = asyncHandler(async (req, res) => {
   const { customerId, products, totalAmount, shippingInfo, paymentInfo } =
     req.body;
@@ -20,8 +20,14 @@ const placeOrder = asyncHandler(async (req, res) => {
 
   try {
     // Create the order
+    const customer = await User.findById(customerId);
+
+    if (!customer) {
+      throw new ApiError(404, "Customer not found");
+    }
     const order = await Order.create({
-      customer: customerId,
+      customer: customer._id, // Saving customer ID in the order
+      customerName: customer.name,
       products,
       totalAmount,
       shippingInfo,
